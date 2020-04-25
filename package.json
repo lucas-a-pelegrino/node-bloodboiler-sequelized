@@ -1,11 +1,11 @@
 {
-  "name": "node-bloodboiler",
-  "version": "v2.0.0",
+  "name": "node-bloodboiler-sequelized",
+  "version": "v1.0.0",
   "description": "A API built on top of expressJS",
   "main": "app.js",
   "author": "Lucas A Pelegrino <lucas.assuncao.p@gmail.com>",
   "license": "MIT",
-  "repository": "https://github.com/lucas-a-pelegrino/node-bloodboiler.git",
+  "repository": "https://github.com/lucas-a-pelegrino/node-bloodboiler-sequelized",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -33,7 +33,6 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "mongoose": "^5.9.9",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.6",
     "swagger-ui-express": "^4.1.4",
@@ -66,7 +65,7 @@
     "javascript",
     "express",
     "boilerplate",
-    "mongoose",
+    "sequelize",
     "jsonwebtoken",
     "RESTful",
     "rest",
