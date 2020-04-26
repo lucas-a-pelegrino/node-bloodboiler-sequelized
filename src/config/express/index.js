@@ -5,7 +5,6 @@ const cors = require('cors');
 const swagger = require('swagger-ui-express');
 require('dotenv').config();
 
-const database = require('../database/mongodb');
 const routes = require('../../routes');
 const swaggerDocs = require('../swagger/swagger.json');
 const { errorTracker, errorHandler } = require('../../middlewares');
@@ -14,7 +13,6 @@ const { ApplicationError, logger, morgan } = require('../../utils');
 const { port, version, corsOptions } = require('../env');
 
 const app = express();
-database.connect();
 
 app.set('port', port || 3000);
 
