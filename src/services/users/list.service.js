@@ -4,9 +4,14 @@ const { queryHelper } = require('../../helpers');
 module.exports.list = async (options) => {
   const query = queryHelper(options);
 
-  query[0].$facet.data.push({ $project: { password: 0, __v: 0 } });
+  const { count, rows } = await usersRepository.list(query);
 
-  const [response] = await usersRepository.list(query);
-
-  return response;
+  return {
+    metadata: {
+      total: count,
+      currentPage: options.page,
+      totalPages: Math.ceil(count / options.perPage),
+    },
+    data: rows,
+  };
 };

@@ -1,10 +1,10 @@
 const { User } = require('../models');
 
 module.exports = {
-  list: (query) => User.aggregate(query).project({ password: false, __v: false }),
-  getById: (id) => User.findById(id),
-  get: (params) => User.findOne(params),
+  list: (query) => User.findAndCountAll(query),
+  getById: (id) => User.findByPk(id),
+  get: (params) => User.findOne({ where: params }),
   create: (params) => User.create(params),
-  update: (user) => user.save(),
-  destroy: (id) => User.findByIdAndDelete(id),
+  update: (id, params) => User.update(params, { where: { id }, returning: true, plain: true }),
+  destroy: (id) => User.destroy({ where: { id } }),
 };

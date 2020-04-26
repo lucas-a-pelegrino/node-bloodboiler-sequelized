@@ -10,7 +10,7 @@ const list = {
 
 const get = {
   params: yup.object().shape({
-    id: yup.string().matches(/^[0-9a-fA-F]{24}$/, 'id must be a valid mongo id'),
+    id: yup.number().integer(),
   }),
 };
 
@@ -34,7 +34,7 @@ const create = {
 
 const update = {
   params: yup.object().shape({
-    id: yup.string().matches(/^[0-9a-fA-F]{24}$/, 'id must be a valid mongo id'),
+    id: yup.number().integer(),
   }),
   body: yup.object().shape({
     name: yup.string(),
@@ -51,7 +51,7 @@ const update = {
 
 const destroy = {
   params: yup.object().shape({
-    id: yup.string().matches(/^[0-9a-fA-F]{24}$/, 'id must be a valid mongo id'),
+    id: yup.number().integer(),
   }),
 };
 
