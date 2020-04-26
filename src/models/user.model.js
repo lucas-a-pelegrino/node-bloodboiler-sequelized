@@ -1,3 +1,5 @@
+const { encryptor } = require('../helpers');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -7,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       passwordResetToken: {
         type: DataTypes.STRING,
-        field: 'password_rest_token',
+        field: 'password_reset_token',
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -18,10 +20,22 @@ module.exports = (sequelize, DataTypes) => {
         field: 'updated_at',
       },
     },
-    {},
+    {
+      tableName: 'users',
+    },
   );
-  User.associate = function(models) {
-    // associations can be defined here
+
+  User.beforeSave(async (user, options) => {
+    const password = await encryptor.hashPassword(user.password);
+    Object.assign(user, { password });
+    return user;
+  });
+
+  User.prototype.toJSON = function() {
+    const user = { ...this.get() };
+    delete user.password;
+    return user;
   };
+
   return User;
 };
