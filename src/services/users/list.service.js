@@ -9,8 +9,9 @@ module.exports.list = async (options) => {
   return {
     metadata: {
       total: count,
-      currentPage: options.page,
       totalPages: Math.ceil(count / options.perPage),
+      ...(options.page > 1 && { previousPage: options.page - 1 }),
+      ...(options.page < count && { nextPage: options.page + 1 }),
     },
     data: rows,
   };
