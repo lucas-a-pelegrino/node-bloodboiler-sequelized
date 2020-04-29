@@ -14,7 +14,7 @@ module.exports.forgotPassword = async (email) => {
   }
 
   const payload = {
-    sub: user._id,
+    sub: user.id,
     iat: moment().unix(),
     exp: moment()
       .add(resetTokenExpiresTime, resetTokenExpiresTimeFormat)
@@ -22,7 +22,7 @@ module.exports.forgotPassword = async (email) => {
   };
 
   const token = await encryptor.generateToken(payload);
-  await userService.update(user._id, { passwordResetToken: token });
+  await userService.update(user.id, { passwordResetToken: token });
 
   const mailContent = {
     text: `To reset your password, access the following link: ${clientURL}/${token}/reset-password`,
