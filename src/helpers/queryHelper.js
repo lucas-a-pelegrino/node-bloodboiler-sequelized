@@ -1,14 +1,12 @@
 module.exports.queryHelper = (options) => {
-  const sort = options.sortBy || 'createdAt:desc';
-  const limit = parseInt(options.perPage || 10, 10);
-  let offset = parseInt(options.page || 1, 10);
-
-  offset = limit * (offset - 1);
+  const sort = options.sortBy;
+  const limit = parseInt(options.perPage, 10);
+  const offset = parseInt(options.page, 10);
 
   const query = {
     where: {},
     limit,
-    offset,
+    offset: limit * (offset - 1),
   };
 
   const [sortKey, sortValue] = sort.trim().split(':');
