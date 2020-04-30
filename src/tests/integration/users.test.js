@@ -2,7 +2,7 @@ const faker = require('faker');
 const request = require('supertest');
 const app = require('../../config/express');
 const { version } = require('../../config/env');
-const { createSampleUsers, createSampleUser, randomMongoId } = require('../fixtures/users.fixtures');
+const { createSampleUsers, createSampleUser } = require('../fixtures/users.fixtures');
 const { generateSampleToken } = require('../fixtures/auth.fixtures');
 
 const baseURL = `/api/${version}/users`;
@@ -12,7 +12,7 @@ let token;
 beforeAll(async () => {
   await createSampleUsers();
   const auth = await createSampleUser();
-  token = await generateSampleToken(auth._id);
+  token = await generateSampleToken(auth.id);
 });
 
 describe('User Endpoints', () => {
@@ -82,8 +82,25 @@ describe('User Endpoints', () => {
       });
     });
 
+    test('Should return metadata with nextPage params', async () => {
+      const page = 1;
+      const perPage = 1;
+      const sortBy = 'createdAt:asc';
+      const response = await request(app)
+        .get(`${baseURL}?page=${page}&perPage=${perPage}&sortBy=${sortBy}`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+
+      const { body } = response;
+      expect(body).toMatchObject({
+        metadata: expect.any(Object),
+        data: expect.any(Array),
+      });
+    });
+
     test('Should return 204 - No Content', async () => {
-      const page = 2;
+      const page = 5;
       const perPage = 10;
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}`)
@@ -117,7 +134,7 @@ describe('User Endpoints', () => {
   describe('GET /users/:id', () => {
     test('Should return an user by its id', async () => {
       const response = await request(app)
-        .get(`${baseURL}/${sampleUser._id}`)
+        .get(`${baseURL}/${sampleUser.id}`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
@@ -126,7 +143,7 @@ describe('User Endpoints', () => {
 
     test('Should return 400 - Bad Request', async () => {
       const response = await request(app)
-        .get(`${baseURL}/1`)
+        .get(`${baseURL}/id`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(400);
@@ -135,7 +152,8 @@ describe('User Endpoints', () => {
           message: 'Invalid Fields',
           errors: {
             params: {
-              id: 'id must be a valid mongo id',
+              id:
+                'params.id must be a `number` type, but the final value was: `NaN` (cast from the value `"id"`).',
             },
           },
         }),
@@ -144,7 +162,7 @@ describe('User Endpoints', () => {
 
     test('Should return 404 - Not Found', async () => {
       const response = await request(app)
-        .get(`${baseURL}/${randomMongoId}`)
+        .get(`${baseURL}/1234`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
@@ -160,7 +178,7 @@ describe('User Endpoints', () => {
       };
 
       const response = await request(app)
-        .put(`${baseURL}/${sampleUser._id}`)
+        .put(`${baseURL}/${sampleUser.id}`)
         .set('Authorization', `Bearer ${token}`)
         .send(params);
 
@@ -176,7 +194,7 @@ describe('User Endpoints', () => {
       };
 
       const response = await request(app)
-        .put(`${baseURL}/${randomMongoId}`)
+        .put(`${baseURL}/1234`)
         .set('Authorization', `Bearer ${token}`)
         .send(params);
 
@@ -187,7 +205,7 @@ describe('User Endpoints', () => {
   describe('DELETE /users/:id', () => {
     test('Should delete an user', async () => {
       const response = await request(app)
-        .delete(`${baseURL}/${sampleUser._id}`)
+        .delete(`${baseURL}/${sampleUser.id}`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(204);
@@ -195,7 +213,7 @@ describe('User Endpoints', () => {
 
     test('Should return 404 - Not Found', async () => {
       const response = await request(app)
-        .delete(`${baseURL}/${randomMongoId}`)
+        .delete(`${baseURL}/1234`)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
@@ -237,7 +255,7 @@ describe('User Endpoints', () => {
     test("Should return 404 - Not Found if provided token doesn't match to any existing user", async () => {
       const page = 2;
       const perPage = 10;
-      const token = await generateSampleToken(randomMongoId);
+      const token = await generateSampleToken(1234);
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}`)
         .set('Authorization', `Bearer ${token}`);

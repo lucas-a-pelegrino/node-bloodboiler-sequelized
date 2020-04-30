@@ -26,12 +26,12 @@ describe('Auth Endpoints', () => {
       expect(response.status).toBe(201);
       expect(response.body).not.toHaveProperty('password');
       expect(response.body).toMatchObject({
-        _id: expect.anything(),
+        id: expect.any(Number),
         name: sampleAuth.name,
         email: sampleAuth.email,
       });
 
-      sampleAuth._id = response.body._id;
+      sampleAuth.id = response.body.id;
     });
 
     test('Should return with 409 - Conflict', async () => {
@@ -92,7 +92,7 @@ describe('Auth Endpoints', () => {
 
   describe('POST /auth/:token/reset-password', () => {
     beforeAll(async () => {
-      sampleAuth = await getSampleUser(sampleAuth._id);
+      sampleAuth = await getSampleUser(sampleAuth.id);
     });
 
     test("Should reset the user's password", async () => {
@@ -105,7 +105,7 @@ describe('Auth Endpoints', () => {
     });
 
     test('Should return 401 - Unauthorized', async () => {
-      const token = await generateExpiredToken(sampleAuth._id);
+      const token = await generateExpiredToken(sampleAuth.id);
       const response = await request(app)
         .post(`${baseURL}/${token}/reset-password`)
         .send({ newPassword: 'P@ssW0rd' });
@@ -114,7 +114,7 @@ describe('Auth Endpoints', () => {
     });
 
     test('Should return 404 - Not Found', async () => {
-      const token = await generateSampleToken(sampleAuth._id);
+      const token = await generateSampleToken(sampleAuth.id);
       const response = await request(app)
         .post(`${baseURL}/${token}/reset-password`)
         .send({ newPassword: 'P@ssW0rd' });

@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
 const { logger } = require('../../utils');
+const models = require('../../models');
 
 module.exports = async () => {
   try {
-    await mongoose.connection.db.dropCollection('users');
+    await models.sequelize.sync();
+    await models.sequelize.close();
     logger.info('Test db cleared and disconnected successfully.');
     process.exit();
   } catch (error) {
