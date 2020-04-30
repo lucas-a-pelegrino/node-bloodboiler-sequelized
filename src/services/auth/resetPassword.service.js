@@ -14,5 +14,5 @@ module.exports.resetPassword = async (token, newPassword) => {
     }
   });
 
-  await userService.update(user._id, { password: newPassword, passwordResetToken: null });
+  await userService.update(user.id, { password: newPassword, passwordResetToken: null });
 };

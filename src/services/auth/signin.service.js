@@ -17,7 +17,7 @@ module.exports.signin = async (email, password) => {
 
   const payload = {
     sub: {
-      id: user._id,
+      id: user.id,
       name: user.name,
       email: user.email,
     },

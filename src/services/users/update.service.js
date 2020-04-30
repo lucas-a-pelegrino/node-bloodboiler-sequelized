@@ -7,8 +7,7 @@ module.exports.update = async (id, body) => {
     throw new ApplicationError('User not found', 404);
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const [rowsUpdated, userUpdated] = await usersRepository.update(id, body);
+  Object.assign(user, body);
 
-  return userUpdated;
+  return usersRepository.update(user);
 };

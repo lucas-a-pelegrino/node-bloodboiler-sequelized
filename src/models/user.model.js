@@ -27,7 +27,9 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeSave(async (user, options) => {
     const password = await encryptor.hashPassword(user.password);
-    Object.assign(user, { password });
+    if (user.changed('password')) {
+      Object.assign(user, { password });
+    }
     return user;
   });
 

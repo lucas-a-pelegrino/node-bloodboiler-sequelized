@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const { usersController } = require('../controllers');
-const { validate } = require('../middlewares');
+const { isAuthorized, validate } = require('../middlewares');
 const {
   validationSchemas: { users },
 } = require('../helpers');
+
+router.use(isAuthorized);
 
 router.get('/', validate(users.list), usersController.list);
 router.get('/:id', validate(users.get), usersController.get);
