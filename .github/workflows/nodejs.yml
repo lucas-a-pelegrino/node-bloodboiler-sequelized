@@ -26,13 +26,11 @@ jobs:
         with:
           postgresql version: '12'
           postgresql db: node-bloodboiler-test
-          postgresql user: test
-          postgresql password: 123456
 
       - name: Install NPM dependencies
         run: npm install
 
-      - name: Run tests
+      - name: Run Test Coverage
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           MAIL_HOST: ${{ secrets.MAIL_HOST }}
