@@ -25,7 +25,7 @@ jobs:
         uses: Harmon758/postgresql-action@v1.0.0
         with:
           postgresql version: '12'
-          postgresql db: node-bloodboiler-test
+          postgresql db: db-test
 
       - name: Install NPM dependencies
         run: npm install
