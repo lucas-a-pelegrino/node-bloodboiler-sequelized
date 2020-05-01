@@ -9,7 +9,14 @@ module.exports = {
   restoreMocks: true,
   collectCoverage: true,
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: ['node_modules', 'src/config', 'src/utils', 'app.js', 'tests'],
+  coveragePathIgnorePatterns: [
+    'node_modules',
+    'src/config',
+    'src/utils',
+    'src/models/index.js',
+    'app.js',
+    'tests',
+  ],
   coverageReporters: ['json', 'text', 'lcov', 'clover'],
   moduleFileExtensions: ['js', 'jsx', 'json', 'yml'],
 };

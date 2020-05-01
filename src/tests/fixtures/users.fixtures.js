@@ -1,9 +1,7 @@
-const { Types } = require('mongoose');
 const faker = require('faker');
 
 const { usersRepository } = require('../../repositories');
 
-const randomMongoId = Types.ObjectId();
 const password = 'P@ssw0rd';
 
 const sampleUsersArray = [
@@ -44,7 +42,6 @@ const createSampleUsers = async () => {
 };
 
 module.exports = {
-  randomMongoId,
   sampleUsersArray,
   createSampleUser,
   createSampleUsers,
