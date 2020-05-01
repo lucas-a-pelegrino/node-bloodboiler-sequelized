@@ -1,12 +1,12 @@
-# Node API Bloodboiler :rocket:
+# Node API Bloodboiler Sequelized :rocket:
 
-![Build](https://github.com/lucas-a-pelegrino/node-bloodboiler/workflows/Build/badge.svg) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7a7eafd4c4c145faad8aece85c786b2d)](https://www.codacy.com/manual/lucas.assuncao.p/node-bloodboiler?utm_source=github.com&utm_medium=referral&utm_content=lucas-a-pelegrino/node-bloodboiler&utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/lucas-a-pelegrino/node-bloodboiler/branch/develop/graph/badge.svg)](https://codecov.io/gh/lucas-a-pelegrino/node-bloodboiler) [![GitHub Release](https://img.shields.io/github/v/release/lucas-a-pelegrino/node-bloodboiler?sort=semver)]() [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://opensource.org/licenses/MIT) [![sequelized version](https://img.shields.io/badge/bloodboiler-sequelized-blue)](https://github.com/lucas-a-pelegrino/node-bloodboiler-sequelized)
+![Build](https://github.com/lucas-a-pelegrino/node-bloodboiler-sequelized/workflows/Build/badge.svg) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b92c60eca75141d1ae6cf1298b15ba39)](https://www.codacy.com/manual/lucas.assuncao.p/node-bloodboiler-sequelized?utm_source=github.com&utm_medium=referral&utm_content=lucas-a-pelegrino/node-bloodboiler-sequelized&utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/lucas-a-pelegrino/node-bloodboiler/branch/develop/graph/badge.svg)](https://codecov.io/gh/lucas-a-pelegrino/node-bloodboiler) [![GitHub Release](https://img.shields.io/github/v/release/lucas-a-pelegrino/node-bloodboiler-sequelized?sort=semver)]() [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://opensource.org/licenses/MIT)
 
 > A API boilerplate built on top of ExpressJS.
 
 ## Features
 
-- **Database:** NoSQL with [MongoDB](https://www.mongodb.com)/[Mongoose](https://mongoosejs.com);
+- **Database:** SQL using [Sequelize](https://sequelize.org/v5/)/[PostgreSQL](https://www.postgresql.org);
 - **Authentication**: Authenticate users with [JWT](https://jwt.io);
 - **Logs:** Logging info with [Winston](https://github.com/winstonjs/winston)/[Morgan](https://github.com/expressjs/morgan);
 - **Tests:** Unit/Integration Tests running with [Jest](https://jestjs.io);
@@ -20,6 +20,8 @@
 - **Linting:** [ESLint](https://eslint.org)/[Prettier](https://prettier.io);
 - **API Documentation:** [Swagger](https://swagger.io)/[Postman](https://www.postman.com);
 
+> This boilerplate is also available with Mongoose/MongoDB on this [repository](https://github.com/lucas-a-pelegrino/node-bloodboiler)!
+
 ## Getting Started
 
 ### Installation Steps
@@ -27,8 +29,8 @@
 Clone the repository
 
 ```sh
-$ git clone https://github.com/lucas-a-pelegrino/node-bloodboiler
-$ cd node-bloodboiler
+$ git clone https://github.com/lucas-a-pelegrino/node-bloodboiler-sequelized
+$ cd node-bloodboiler-sequelized
 ```
 
 Install the dependencies
