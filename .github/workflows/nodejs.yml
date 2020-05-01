@@ -25,6 +25,9 @@ jobs:
         uses: Harmon758/postgresql-action@v1.0.0
         with:
           postgresql version: '12'
+          postgresql db: node-bloodboiler-test
+          postgresql user: test
+          postgresql password: 1234
 
       - name: Install NPM dependencies
         run: npm install
@@ -36,11 +39,11 @@ jobs:
           MAIL_PORT: ${{ secrets.MAIL_PORT }}
           MAIL_USER: ${{ secrets.MAIL_USER }}
           MAIL_PASS: ${{ secrets.MAIL_PASS }}
-        run: |
-          npm install
-          bash scripts/environment.sh
-          NODE_ENV=test npx sequelize db:create && NODE_ENV=test npx sequelize db:migrate
-          npm run test:coverage
+      - run: npm install
+      - run: bash scripts/environment.sh
+      - run: npm run pretest
+      - run: npm run test:coverage
+      - run: npm run posttest
 
       - name: Codecov
         uses: codecov/codecov-action@v1.0.6
