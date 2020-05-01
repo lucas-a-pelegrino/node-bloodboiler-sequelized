@@ -10,7 +10,6 @@ RESET_TOKEN_EXPIRES_TIME_FORMAT=minutes
 
 DB_NAME=node-bloodboiler
 DB_HOST=localhost
-DB_PORT=27017
 DB_USER=
 DB_PASSWORD=
 
