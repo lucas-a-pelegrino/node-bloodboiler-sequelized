@@ -37,6 +37,7 @@ jobs:
         run: |
           npm install
           bash scripts/environment.sh
+          NODE_ENV=test npx sequelize db:create && NODE_ENV=test npx sequelize db:migrate
           npm run test:coverage
 
       - name: Codecov
