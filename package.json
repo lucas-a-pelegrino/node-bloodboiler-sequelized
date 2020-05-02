@@ -1,6 +1,6 @@
 {
   "name": "node-bloodboiler-sequelized",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "A API built on top of expressJS",
   "main": "app.js",
   "author": "Lucas A Pelegrino <lucas.assuncao.p@gmail.com>",
@@ -22,7 +22,8 @@
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm test"
     }
   },
   "dependencies": {
@@ -32,7 +33,6 @@
     "express": "^4.17.1",
     "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.6",
