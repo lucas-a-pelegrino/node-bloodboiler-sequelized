@@ -34,7 +34,6 @@ jobs:
       - name: Run Test Coverage
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          DB_HOST: postgres
           DB_USER: pg_user
           DB_PASS: pg_pass
           MAIL_HOST: ${{ secrets.MAIL_HOST }}
