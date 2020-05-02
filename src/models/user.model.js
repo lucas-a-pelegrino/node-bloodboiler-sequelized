@@ -35,8 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.prototype.toJSON = function() {
     const user = { ...this.get() };
-    delete user.password;
-    return user;
+    return Object.fromEntries(Object.entries(user).filter(([key]) => !['password'].includes(key)));
   };
 
   return User;

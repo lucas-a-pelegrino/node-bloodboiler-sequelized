@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Node Bloodboiler",
-    "version": "v2.0.0",
+    "version": "v1.0.0-beta",
     "description": "A API boilerplate built on top of expressJS",
     "license": {
       "name": "MIT",
@@ -16,7 +16,7 @@
     }
   ],
   "externalDocs": {
-    "url": "https://documenter.getpostman.com/view/2660803/S1TN61BV",
+    "url": "https://documenter.getpostman.com/view/2660803/SzmZcfU6",
     "description": "Postman"
   },
   "tags": [
@@ -67,7 +67,7 @@
                   "$ref": "#/components/schemas/User"
                 },
                 "example": {
-                  "_id": "5e98e39dc0a02022f2d02b4c",
+                  "id": 1,
                   "passwordResetToken": null,
                   "name": "John Doe",
                   "email": "johndoe@ioasys.com.br",
@@ -86,7 +86,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Email already in use"]
+                  "message": "Email already in use"
                 }
               }
             }
@@ -147,7 +147,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Invalid Password"]
+                  "message": "Invalid Password"
                 }
               }
             }
@@ -161,7 +161,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["User Not Found"]
+                  "message": "User Not Found"
                 }
               }
             }
@@ -204,7 +204,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["User Not Found"]
+                  "message": "User Not Found"
                 }
               }
             }
@@ -244,7 +244,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Token Expired"]
+                  "message": "Token Expired"
                 }
               }
             }
@@ -258,7 +258,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["User Not Found"]
+                  "message": "User Not Found"
                 }
               }
             }
@@ -311,9 +311,6 @@
                         "total": {
                           "type": "integer"
                         },
-                        "currentPage": {
-                          "type": "integer"
-                        },
                         "totalPages": {
                           "type": "integer"
                         }
@@ -330,12 +327,11 @@
                 "example": {
                   "metadata": {
                     "total": 1,
-                    "currentPage": 1,
                     "totalPages": 1
                   },
                   "data": [
                     {
-                      "_id": "5e98e39dc0a02022f2d02b4c",
+                      "id": 1,
                       "passwordResetToken": null,
                       "name": "John Doe",
                       "email": "johndoe@ioasys.com.br",
@@ -359,7 +355,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Invalid Token"]
+                  "message": "Invalid Token"
                 }
               }
             }
@@ -405,7 +401,7 @@
                   "$ref": "#/components/schemas/User"
                 },
                 "example": {
-                  "_id": "5e98e39dc0a02022f2d02b4c",
+                  "id": 1,
                   "passwordResetToken": null,
                   "name": "John Doe",
                   "email": "johndoe@ioasys.com.br",
@@ -424,7 +420,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Invalid Token"]
+                  "message": "Invalid Token"
                 }
               }
             }
@@ -438,7 +434,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Email already in use"]
+                  "message": "Email already in use"
                 }
               }
             }
@@ -472,7 +468,7 @@
                   "$ref": "#/components/schemas/User"
                 },
                 "example": {
-                  "_id": "5e98e39dc0a02022f2d02b4c",
+                  "id": 1,
                   "passwordResetToken": null,
                   "name": "John Doe",
                   "email": "johndoe@ioasys.com.br",
@@ -491,7 +487,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Invalid Token"]
+                  "message": "Invalid Token"
                 }
               }
             }
@@ -505,7 +501,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["User Not Found"]
+                  "message": "User Not Found"
                 }
               }
             }
@@ -551,7 +547,7 @@
                   "$ref": "#/components/schemas/User"
                 },
                 "example": {
-                  "_id": "5e98e39dc0a02022f2d02b4c",
+                  "id": 1,
                   "passwordResetToken": null,
                   "name": "John Doe",
                   "email": "johndoe@ioasys.com.br",
@@ -570,7 +566,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Invalid Token"]
+                  "message": "Invalid Token"
                 }
               }
             }
@@ -584,7 +580,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["User Not Found"]
+                  "message": "User Not Found"
                 }
               }
             }
@@ -609,7 +605,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["Invalid Token"]
+                  "message": "Invalid Token"
                 }
               }
             }
@@ -623,7 +619,7 @@
                 },
                 "example": {
                   "name": "ApplicationError",
-                  "messages": ["User Not Found"]
+                  "message": "User Not Found"
                 }
               }
             }
@@ -638,8 +634,8 @@
       "User": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string"
+          "id": {
+            "type": "integer"
           },
           "passwordResetToken": {
             "type": "string"
@@ -664,11 +660,8 @@
           "name": {
             "type": "string"
           },
-          "messages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "message": {
+            "type": "string"
           }
         }
       }
