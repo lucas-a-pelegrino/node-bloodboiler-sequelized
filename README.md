@@ -77,7 +77,7 @@ $ yarn test
 
 You might want to check the API docs as well!
 
-- Collection on [Postman](https://documenter.getpostman.com/view/2660803/S1TN61BV);
+- Collection on [Postman](https://documenter.getpostman.com/view/2660803/SzmZcfU6);
 - Swagger: Just start the application at your desired `host:port` and use the route: `/api/v1/documentation` to open the swagger docs;
 
 ## License
