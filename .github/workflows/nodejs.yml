@@ -22,10 +22,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Setup PostgreSQL
-        uses: Harmon758/postgresql-action@v1.0.0
+        uses: danielweller-swp/postgresql-action@v2
         with:
           postgresql version: '12'
-          postgresql password: postgres
+          postgresql init scripts: 'init-db'
+
+      - name: Wait / Sleep
+        uses: jakejarvis/wait-action@v0.1.0
+        with:
+          time: '10s'
 
       - name: Collect Docker Logs
         uses: jwalton/gh-docker-logs@v1.0.0
@@ -39,7 +44,6 @@ jobs:
       - name: Run Tests
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          DB_PASSWORD: postgres
           MAIL_HOST: ${{ secrets.MAIL_HOST }}
           MAIL_PORT: ${{ secrets.MAIL_PORT }}
           MAIL_USER: ${{ secrets.MAIL_USER }}
