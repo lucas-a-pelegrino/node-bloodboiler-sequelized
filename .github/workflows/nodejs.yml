@@ -26,6 +26,7 @@ jobs:
         with:
           postgresql version: '12'
           postgresql init scripts: 'init-db'
+          postgresql user: 'user'
           postgresql password: 'postgresql'
 
       - name: Wait / Sleep
@@ -45,6 +46,7 @@ jobs:
       - name: Run Tests
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DB_USER: user
           DB_PASS: postgresql
           MAIL_HOST: ${{ secrets.MAIL_HOST }}
           MAIL_PORT: ${{ secrets.MAIL_PORT }}
