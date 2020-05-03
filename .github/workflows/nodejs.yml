@@ -24,14 +24,25 @@ jobs:
       - name: Setup PostgreSQL
         uses: Harmon758/postgresql-action@v1.0.0
         with:
-          postgresql version: '11'
+          postgresql version: '12'
           postgresql user: pg_user
           postgresql pass: pg_pass
+
+      - name: Wait / Sleep
+        uses: jakejarvis/wait-action@v0.1.0
+        with:
+          time: '10s'
+
+      - name: Collect Docker Logs
+        uses: jwalton/gh-docker-logs@v1.0.0
+
+      - name: Check running containers
+        run: docker ps -a
 
       - name: Install NPM dependencies
         run: npm install
 
-      - name: Run Test Coverage
+      - name: Run Tests
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DB_USER: pg_user
@@ -41,11 +52,10 @@ jobs:
           MAIL_USER: ${{ secrets.MAIL_USER }}
           MAIL_PASS: ${{ secrets.MAIL_PASS }}
         run: |
-          npm install
           bash scripts/environment.sh
-          NODE_ENV=test npx sequelize db:create && NODE_ENV=test npx sequelize db:migrate
+          npm run pretest
           npm run test:coverage
-          NODE_ENV=test npx sequelize db:drop
+          npm run posttest
 
       - name: Codecov
         uses: codecov/codecov-action@v1.0.6
