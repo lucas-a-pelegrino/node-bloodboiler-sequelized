@@ -26,7 +26,7 @@ jobs:
         with:
           postgresql version: '12'
           postgresql user: pg_user
-          postgresql pass: pg_pass
+          postgresql password: pg_pass
 
       - name: Wait / Sleep
         uses: jakejarvis/wait-action@v0.1.0
