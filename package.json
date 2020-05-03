@@ -1,6 +1,6 @@
 {
   "name": "node-bloodboiler-sequelized",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "description": "A API built on top of expressJS",
   "main": "app.js",
   "author": "Lucas A Pelegrino <lucas.assuncao.p@gmail.com>",
@@ -14,10 +14,10 @@
     "start:staging": "NODE_ENV=staging node app.js",
     "start:dev": "NODE_ENV=development nodemon app.js",
     "start:debug": "NODE_ENV=development node --inspect-brk=5858 app.js",
-    "pretest": "NODE_ENV=test npx sequelize db:create && NODE_ENV=test npx sequelize db:migrate",
     "test": "jest -i",
-    "posttest": "NODE_ENV=test npx sequelize db:drop",
-    "test:coverage": "jest -i && codecov"
+    "test:coverage": "jest -i && codecov",
+    "pretest": "NODE_ENV=test npx sequelize db:create && NODE_ENV=test npx sequelize db:migrate",
+    "posttest": "NODE_ENV=test npx sequelize db:drop"
   },
   "husky": {
     "hooks": {
