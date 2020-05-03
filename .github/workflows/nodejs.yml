@@ -29,17 +29,6 @@ jobs:
           postgresql user: 'user'
           postgresql password: 'postgresql'
 
-      - name: Wait / Sleep
-        uses: jakejarvis/wait-action@v0.1.0
-        with:
-          time: '10s'
-
-      - name: Collect Docker Logs
-        uses: jwalton/gh-docker-logs@v1.0.0
-
-      - name: Check running containers
-        run: docker ps -a
-
       - name: Install NPM dependencies
         run: npm install
 
