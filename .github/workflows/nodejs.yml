@@ -25,8 +25,8 @@ jobs:
         uses: Harmon758/postgresql-action@v1.0.0
         with:
           postgresql version: '12'
-          postgresql user: pg_user
-          postgresql password: pg_pass
+          postgresql user: test_user
+          postgresql password: test_pass
 
       - name: Wait / Sleep
         uses: jakejarvis/wait-action@v0.1.0
@@ -45,8 +45,8 @@ jobs:
       - name: Run Tests
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          DB_USER: pg_user
-          DB_PASSWORD: pg_pass
+          DB_USER: test_user
+          DB_PASSWORD: test_pass
           MAIL_HOST: ${{ secrets.MAIL_HOST }}
           MAIL_PORT: ${{ secrets.MAIL_PORT }}
           MAIL_USER: ${{ secrets.MAIL_USER }}
