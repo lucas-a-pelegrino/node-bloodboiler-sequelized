@@ -26,6 +26,7 @@ jobs:
         with:
           postgresql version: '12'
           postgresql init scripts: 'init-db'
+          postgresql password: 'postgresql'
 
       - name: Wait / Sleep
         uses: jakejarvis/wait-action@v0.1.0
