@@ -1,0 +1,56 @@
+name: NodeJS CI
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup PostgreSQL
+        uses: danielweller-swp/postgresql-action@v2
+        with:
+          postgresql version: '12'
+          postgresql init scripts: 'init-db'
+          postgresql user: 'user'
+          postgresql password: 'postgresql'
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Run Tests
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DB_USER: user
+          DB_PASS: postgresql
+          MAIL_HOST: ${{ secrets.MAIL_HOST }}
+          MAIL_PORT: ${{ secrets.MAIL_PORT }}
+          MAIL_USER: ${{ secrets.MAIL_USER }}
+          MAIL_PASS: ${{ secrets.MAIL_PASS }}
+        run: |
+          bash scripts/environment.sh
+          npm run pretest
+          npm run test:coverage
+          npm run posttest
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+        env:
+          CI: true
