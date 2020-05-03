@@ -45,6 +45,7 @@ jobs:
       - name: Run Tests
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DB_PASS: postgresql
           MAIL_HOST: ${{ secrets.MAIL_HOST }}
           MAIL_PORT: ${{ secrets.MAIL_PORT }}
           MAIL_USER: ${{ secrets.MAIL_USER }}
