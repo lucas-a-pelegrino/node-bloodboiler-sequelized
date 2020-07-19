@@ -41,7 +41,7 @@
     "swagger-ui-express": "^4.1.4",
     "winston": "^3.2.1",
     "xss-clean": "^0.1.1",
-    "yup": "^0.28.3"
+    "yup": "^0.29.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
