@@ -31,7 +31,7 @@ module.exports = catchAsync(async (req, res, next) => {
     throw new ApplicationError('User Not Found', 404);
   }
 
-  req.session = { token, _id: decodedUser._id, email: decodedUser.email };
+  req.session = { token, id: decodedUser.id, email: decodedUser.email };
 
   next();
 });
