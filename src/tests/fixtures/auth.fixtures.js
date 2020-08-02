@@ -37,7 +37,8 @@ const generateSampleInvalidToken = async (id) => {
 
   return jwt.issue(payload);
 };
-const malformedToken = 'khjkasgjhja';
+const malformedToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjEsIm5hbWUiOiJFbGlhcyBSYWJlbG8iLCJlbWFpbC5jb20uYnJyIn0sImlhdCI6MTU5NjM5NjU3OX0.BptQRTp58XgH_qHDIx2n-7SZGIE-e3FU6cG7bBZBR0E';
 
 module.exports = {
   getSampleUser,
