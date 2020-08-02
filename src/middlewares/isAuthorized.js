@@ -1,5 +1,6 @@
+const { Op } = require('sequelize');
 const { jwt, catchAsync, ApplicationError } = require('../utils');
-const { usersRepository } = require('../repositories');
+const { accessTokenRepository } = require('../repositories');
 
 module.exports = catchAsync(async (req, res, next) => {
   let token;
@@ -16,22 +17,22 @@ module.exports = catchAsync(async (req, res, next) => {
     throw new ApplicationError('Missing Authorization', 401);
   }
 
-  let userId;
-  jwt.verify(token, (err, decoded) => {
+  let decoded;
+  jwt.verify(token, (err, decodedToken) => {
     if (err) {
       throw new ApplicationError(err.message, 401);
     }
 
-    userId = decoded.sub.id;
+    decoded = decodedToken;
   });
-
-  const decodedUser = await usersRepository.getById(userId);
-
-  if (!decodedUser) {
-    throw new ApplicationError('User Not Found', 404);
+  const accessToken = await accessTokenRepository.get({
+    where: { [Op.and]: [{ token }, { expired: false }] },
+  });
+  if (!accessToken) {
+    throw new ApplicationError('Token Not Found', 404);
   }
 
-  req.session = { token, id: decodedUser.id, email: decodedUser.email };
+  req.session = { token, id: decoded.id, email: decoded.email };
 
   next();
 });

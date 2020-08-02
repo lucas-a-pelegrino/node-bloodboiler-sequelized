@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const { resetTokenExpiresTime, resetTokenExpiresTimeFormat } = require('../../config/env');
 
-const { usersService } = require('../../services');
+const { usersService, accessTokenService } = require('../../services');
 const { jwt } = require('../../utils');
 
 const getSampleUser = async (id) => usersService.get(id);
@@ -27,11 +27,22 @@ const generateSampleToken = async (id) => {
     iat: moment().unix(),
   };
 
+  return accessTokenService.create(payload);
+};
+const generateSampleInvalidToken = async (id) => {
+  const payload = {
+    sub: { id },
+    iat: moment().unix(),
+  };
+
   return jwt.issue(payload);
 };
+const malformedToken = 'khjkasgjhja';
 
 module.exports = {
   getSampleUser,
   generateExpiredToken,
   generateSampleToken,
+  generateSampleInvalidToken,
+  malformedToken,
 };

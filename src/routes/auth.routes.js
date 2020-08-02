@@ -9,5 +9,5 @@ router.post('/register', validate(users.create), authController.register);
 router.post('/signin', validate(auth.signin), authController.signin);
 router.post('/forgot-password', validate(auth.forgotPassword), authController.forgotPassword);
 router.post('/:token/reset-password', validate(auth.resetPassword), authController.resetPassword);
-
+router.post('/refresh-token', validate(auth.refreshToken), authController.refreshToken);
 module.exports.auth = router;
