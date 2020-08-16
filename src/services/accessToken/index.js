@@ -1,7 +1,5 @@
-const { create } = require('./create');
-const { refreshToken } = require('./refreshToken');
+const { create } = require('./create.service');
 
 module.exports = {
   create,
-  refreshToken,
 };

@@ -5,12 +5,12 @@ module.exports = {
   create: async (params) => {
     const token = encryptor.generateToken(params, {
       algorithm: 'HS384',
-      expiresIn: 86000,
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
     });
     const refreshParams = { id: params.sub.id };
     const refreshToken = encryptor.generateToken(refreshParams, {
       algorithm: 'HS256',
-      expiresIn: 86000 * 30,
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
     });
     await accessTokenRepository.create({
       userId: params.sub.id,

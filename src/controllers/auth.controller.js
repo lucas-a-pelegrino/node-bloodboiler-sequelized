@@ -1,5 +1,5 @@
 const { catchAsync } = require('../utils');
-const { authService, usersService, accessTokenService } = require('../services');
+const { authService, usersService } = require('../services');
 
 module.exports = {
   register: catchAsync(async (req, res) => {
@@ -16,7 +16,7 @@ module.exports = {
 
   refreshToken: catchAsync(async (req, res) => {
     const { token, refreshToken } = req.body;
-    const response = await accessTokenService.refreshToken(token, refreshToken);
+    const response = await authService.refreshToken(token, refreshToken);
     return res.status(201).json(response);
   }),
 

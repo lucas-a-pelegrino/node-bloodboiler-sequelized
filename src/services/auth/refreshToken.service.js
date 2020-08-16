@@ -2,7 +2,7 @@ const httpCodes = require('http-status-codes');
 const moment = require('moment');
 const { Op } = require('sequelize');
 const { jwt, ApplicationError } = require('../../utils');
-const { create } = require('./create');
+const { create } = require('../accessToken/create.service');
 const { accessTokenRepository, usersRepository } = require('../../repositories');
 
 module.exports = {
@@ -27,7 +27,8 @@ module.exports = {
     if (!accessToken) {
       throw new ApplicationError('token-not-found', httpCodes.NOT_FOUND);
     }
-    await accessTokenRepository.update({ expired: true }, accessToken.id);
+    accessToken.expired = true;
+    await accessTokenRepository.update(accessToken);
     const user = await usersRepository.getById(userId);
     return create({
       sub: {
