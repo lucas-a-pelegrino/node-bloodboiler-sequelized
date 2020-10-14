@@ -10,10 +10,11 @@ module.exports = {
     let userId;
     jwt.verify(refreshToken, (err, decoded) => {
       if (err) {
-        throw new ApplicationError(err.message, 401);
+        throw new ApplicationError(err.message, httpCodes.UNAUTHORIZED);
       }
       userId = decoded.id;
     });
+
     const accessToken = await accessTokenRepository.get({
       where: {
         [Op.and]: [
@@ -24,12 +25,16 @@ module.exports = {
         ],
       },
     });
+
     if (!accessToken) {
       throw new ApplicationError('token-not-found', httpCodes.NOT_FOUND);
     }
+
     accessToken.expired = true;
     await accessTokenRepository.update(accessToken);
+
     const user = await usersRepository.getById(userId);
+
     return create({
       sub: {
         id: user.id,
