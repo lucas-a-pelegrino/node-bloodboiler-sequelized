@@ -9,8 +9,8 @@ module.exports = {
   clientURL: process.env.CLIENT_URL,
   version: 'v1',
   secret: process.env.JWT_SECRET,
-  resetTokenExpiresTime: process.env.RESET_TOKEN_EXPIRES_TIME,
-  resetTokenExpiresTimeFormat: process.env.RESET_TOKEN_EXPIRES_TIME_FORMAT,
+  resetTokenExpiresIn: process.env.RESET_TOKEN_EXPIRES_IN,
+  resetTokenExpiresInFormat: process.env.RESET_TOKEN_EXPIRES_TIME_IN,
   corsOptions: {
     origin: '*',
     methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',

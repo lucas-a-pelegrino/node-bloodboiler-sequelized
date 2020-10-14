@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const { resetTokenExpiresTime, resetTokenExpiresTimeFormat } = require('../../config/env');
+const { resetTokenExpiresIn, resetTokenExpiresInFormat } = require('../../config/env');
 
 const { usersService, accessTokenService } = require('../../services');
 const { jwt } = require('../../utils');
@@ -11,7 +11,7 @@ const generateExpiredToken = async (id) => {
   const payload = {
     sub: id,
     exp: moment()
-      .subtract(resetTokenExpiresTime, resetTokenExpiresTimeFormat)
+      .subtract(resetTokenExpiresIn, resetTokenExpiresInFormat)
       .unix(),
   };
 

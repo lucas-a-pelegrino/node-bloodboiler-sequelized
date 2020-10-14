@@ -5,7 +5,7 @@ const { ApplicationError } = require('../../utils');
 const { encryptor, mailer } = require('../../helpers');
 const userService = require('../users/update.service');
 
-const { resetTokenExpiresTime, resetTokenExpiresTimeFormat, clientURL } = require('../../config/env');
+const { resetTokenExpiresIn, resetTokenExpiresInFormat, clientURL } = require('../../config/env');
 
 module.exports.forgotPassword = async (email) => {
   const user = await usersRepository.get({ email });
@@ -17,7 +17,7 @@ module.exports.forgotPassword = async (email) => {
     sub: user.id,
     iat: moment().unix(),
     exp: moment()
-      .add(resetTokenExpiresTime, resetTokenExpiresTimeFormat)
+      .add(resetTokenExpiresIn, resetTokenExpiresInFormat)
       .unix(),
   };
 
