@@ -1,5 +1,3 @@
-const moment = require('moment');
-
 const { usersRepository } = require('../../repositories');
 const { ApplicationError } = require('../../utils');
 const { encryptor } = require('../../helpers');
@@ -22,7 +20,6 @@ module.exports.signin = async (email, password) => {
       name: user.name,
       email: user.email,
     },
-    iat: moment().unix(),
   };
 
   return accessTokenService.create(payload);

@@ -1,23 +1,37 @@
+const moment = require('moment');
+
 const { accessTokenRepository } = require('../../repositories');
 const { encryptor } = require('../../helpers');
 
 const { refreshTokenExpiresIn, accessTokenExpiresIn } = require('../../config/env');
 
 module.exports = {
-  create: async (params) => {
-    const token = encryptor.generateToken(params, {
-      algorithm: 'HS384',
-      expiresIn: accessTokenExpiresIn,
-    });
+  create: async (payload) => {
+    const token = encryptor.generateToken(
+      {
+        ...payload,
+        iat: moment().unix(),
+      },
+      {
+        algorithm: 'HS384',
+        expiresIn: accessTokenExpiresIn,
+      },
+    );
 
-    const refreshParams = { id: params.sub.id };
-    const refreshToken = encryptor.generateToken(refreshParams, {
+    const refreshTokenPayload = {
+      sub: {
+        id: payload.sub.id,
+      },
+      iat: moment().unix(),
+    };
+
+    const refreshToken = encryptor.generateToken(refreshTokenPayload, {
       algorithm: 'HS256',
       expiresIn: refreshTokenExpiresIn,
     });
 
     await accessTokenRepository.create({
-      userId: params.sub.id,
+      userId: payload.sub.id,
       token,
       refreshToken,
     });
