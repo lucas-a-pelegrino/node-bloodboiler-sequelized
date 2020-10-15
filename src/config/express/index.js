@@ -37,7 +37,7 @@ app.use(`/api/${version}/documentation`, swagger.setup(swaggerDocs));
 Object.keys(routes).forEach((key) => app.use(`/api/${version}/${key}`, routes[key]));
 
 app.use((req, res, next) => {
-  next(new ApplicationError(404, 'Resource Not Found'));
+  next(new ApplicationError('Resource Not Found', 404));
 });
 
 app.use(errorTracker);
