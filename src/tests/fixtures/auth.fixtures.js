@@ -18,7 +18,6 @@ const generateExpiredToken = async (id) => {
     expiresIn: `-${resetTokenExpiresIn}`,
   });
 
-  console.info(token);
   await usersService.update(id, { passwordResetToken: token });
 
   return token;
