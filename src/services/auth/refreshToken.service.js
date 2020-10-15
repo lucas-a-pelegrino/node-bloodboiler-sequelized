@@ -12,7 +12,7 @@ module.exports = {
       if (err) {
         throw new ApplicationError(err.message, httpCodes.UNAUTHORIZED);
       }
-      userId = decoded.id;
+      userId = decoded.sub.id;
     });
 
     const accessToken = await accessTokenRepository.get({

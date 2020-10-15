@@ -5,7 +5,7 @@ const { ApplicationError } = require('../../utils');
 const { encryptor, mailer } = require('../../helpers');
 const userService = require('../users/update.service');
 
-const { resetTokenExpiresIn, resetTokenExpiresInFormat, clientURL } = require('../../config/env');
+const { resetTokenExpiresIn, clientURL } = require('../../config/env');
 
 module.exports.forgotPassword = async (email) => {
   const user = await usersRepository.get({ email });
@@ -16,12 +16,12 @@ module.exports.forgotPassword = async (email) => {
   const payload = {
     sub: user.id,
     iat: moment().unix(),
-    exp: moment()
-      .add(resetTokenExpiresIn, resetTokenExpiresInFormat)
-      .unix(),
   };
 
-  const token = await encryptor.generateToken(payload);
+  const token = await encryptor.generateToken(payload, {
+    algorithm: 'HS256',
+    expiresIn: resetTokenExpiresIn,
+  });
   await userService.update(user.id, { passwordResetToken: token });
 
   const mailContent = {

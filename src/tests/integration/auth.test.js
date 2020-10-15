@@ -129,10 +129,11 @@ describe('Auth Endpoints', () => {
     });
   });
 
-  describe('POST /auth/:token/refresh-token', () => {
+  describe('POST /auth/refresh-token', () => {
     beforeAll(async () => {
       sampleAuth = await getSampleUser(sampleAuth.id);
     });
+
     test('Should refresh user token', async () => {
       const { token, refreshToken } = await generateSampleToken(sampleAuth.id);
       const response = await request(app)
@@ -140,6 +141,7 @@ describe('Auth Endpoints', () => {
         .send({ token, refreshToken });
       expect(response.status).toBe(201);
     });
+
     test('Should not refresh user token - Token Not found', async () => {
       const token = await generateSampleInvalidToken(7123);
       const refreshToken = await generateSampleInvalidToken(7123);
@@ -148,6 +150,7 @@ describe('Auth Endpoints', () => {
         .send({ token, refreshToken });
       expect(response.status).toBe(404);
     });
+
     test('Should not refresh user token - Refresh Token is Malformed', async () => {
       const token = await generateSampleInvalidToken(7123);
       const response = await request(app)
