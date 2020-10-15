@@ -22,6 +22,7 @@ module.exports.forgotPassword = async (email) => {
     algorithm: 'HS256',
     expiresIn: resetTokenExpiresIn,
   });
+
   await userService.update(user.id, { passwordResetToken: token });
 
   const mailContent = {

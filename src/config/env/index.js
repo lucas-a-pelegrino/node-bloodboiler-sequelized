@@ -12,7 +12,6 @@ module.exports = {
   accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
   refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
   resetTokenExpiresIn: process.env.RESET_TOKEN_EXPIRES_IN,
-  resetTokenExpiresInFormat: process.env.RESET_TOKEN_EXPIRES_TIME_IN,
   corsOptions: {
     origin: '*',
     methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
