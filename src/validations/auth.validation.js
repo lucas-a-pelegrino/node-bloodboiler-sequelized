@@ -18,7 +18,12 @@ const forgotPassword = {
       .required(),
   }),
 };
-
+const refreshToken = {
+  body: yup.object().shape({
+    token: yup.string().required(),
+    refreshToken: yup.string().required(),
+  }),
+};
 const resetPassword = {
   params: yup.object().shape({
     token: yup.string().required(),
@@ -39,4 +44,5 @@ module.exports.auth = {
   signin,
   forgotPassword,
   resetPassword,
+  refreshToken,
 };

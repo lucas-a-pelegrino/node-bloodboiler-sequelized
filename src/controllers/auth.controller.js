@@ -14,6 +14,12 @@ module.exports = {
     return res.status(200).json(response);
   }),
 
+  refreshToken: catchAsync(async (req, res) => {
+    const { token, refreshToken } = req.body;
+    const response = await authService.refreshToken(token, refreshToken);
+    return res.status(201).json(response);
+  }),
+
   forgotPassword: catchAsync(async (req, res) => {
     const { email } = req.body;
     await authService.forgotPassword(email);
