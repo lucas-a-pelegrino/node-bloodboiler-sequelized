@@ -1,9 +1,9 @@
-const moment = require('moment');
 const { StatusCodes } = require('http-status-codes');
 
 const { usersRepository } = require('../../repositories');
 const { ApplicationError } = require('../../utils');
 const { encryptor } = require('../../helpers');
+const accessTokenService = require('../accessToken');
 
 module.exports.signin = async (email, password) => {
   const user = await usersRepository.get({ email });
@@ -22,10 +22,7 @@ module.exports.signin = async (email, password) => {
       name: user.name,
       email: user.email,
     },
-    iat: moment().unix(),
   };
 
-  const token = await encryptor.generateToken(payload);
-
-  return { token };
+  return accessTokenService.create(payload);
 };

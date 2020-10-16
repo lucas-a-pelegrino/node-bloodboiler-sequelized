@@ -5,7 +5,13 @@ const { StatusCodes } = require('http-status-codes');
 const app = require('../../config/express');
 const { version } = require('../../config/env');
 
-const { getSampleUser, generateExpiredToken, generateSampleToken } = require('../fixtures/auth.fixtures');
+const {
+  getSampleUser,
+  generateExpiredToken,
+  generateSampleToken,
+  generateSampleInvalidToken,
+  malformedToken,
+} = require('../fixtures/auth.fixtures');
 
 const baseURL = `/api/${version}/auth`;
 
@@ -116,12 +122,43 @@ describe('Auth Endpoints', () => {
     });
 
     test('Should return 404 - Not Found', async () => {
-      const token = await generateSampleToken(sampleAuth.id);
+      const { token } = await generateSampleToken(sampleAuth.id);
       const response = await request(app)
         .post(`${baseURL}/${token}/reset-password`)
         .send({ newPassword: 'P@ssW0rd' });
 
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
+    });
+  });
+
+  describe('POST /auth/refresh-token', () => {
+    beforeAll(async () => {
+      sampleAuth = await getSampleUser(sampleAuth.id);
+    });
+
+    test('Should refresh user token', async () => {
+      const { token, refreshToken } = await generateSampleToken(sampleAuth.id);
+      const response = await request(app)
+        .post(`${baseURL}/refresh-token`)
+        .send({ token, refreshToken });
+      expect(response.status).toBe(201);
+    });
+
+    test('Should not refresh user token - Token Not found', async () => {
+      const token = await generateSampleInvalidToken(7123);
+      const refreshToken = await generateSampleInvalidToken(7123);
+      const response = await request(app)
+        .post(`${baseURL}/refresh-token`)
+        .send({ token, refreshToken });
+      expect(response.status).toBe(404);
+    });
+
+    test('Should not refresh user token - Refresh Token is Malformed', async () => {
+      const token = await generateSampleInvalidToken(7123);
+      const response = await request(app)
+        .post(`${baseURL}/refresh-token`)
+        .send({ token, refreshToken: malformedToken });
+      expect(response.status).toBe(401);
     });
   });
 });

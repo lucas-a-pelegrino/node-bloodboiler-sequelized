@@ -5,16 +5,17 @@ const { StatusCodes } = require('http-status-codes');
 const app = require('../../config/express');
 const { version } = require('../../config/env');
 const { createSampleUsers, createSampleUser } = require('../fixtures/users.fixtures');
-const { generateSampleToken } = require('../fixtures/auth.fixtures');
+const { generateSampleToken, generateSampleInvalidToken } = require('../fixtures/auth.fixtures');
 
 const baseURL = `/api/${version}/users`;
 
 let sampleUser;
-let token;
+let authToken;
 beforeAll(async () => {
   await createSampleUsers();
   const auth = await createSampleUser();
-  token = await generateSampleToken(auth.id);
+  const { token } = await generateSampleToken(auth.id);
+  authToken = token;
 });
 
 describe('User Endpoints', () => {
@@ -28,7 +29,7 @@ describe('User Endpoints', () => {
 
       const response = await request(app)
         .post(`${baseURL}/`)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send(sampleUser);
 
       sampleUser = response.body;
@@ -45,7 +46,7 @@ describe('User Endpoints', () => {
 
       const response = await request(app)
         .post(`${baseURL}/`)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send(params);
 
       expect(response.status).toBe(StatusCodes.CONFLICT);
@@ -59,7 +60,7 @@ describe('User Endpoints', () => {
       const sortBy = 'createdAt:asc';
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}&sortBy=${sortBy}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.OK);
 
@@ -73,7 +74,7 @@ describe('User Endpoints', () => {
     test('Should return a list of users and metadata (without query params)', async () => {
       const response = await request(app)
         .get(`${baseURL}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.OK);
 
@@ -90,7 +91,7 @@ describe('User Endpoints', () => {
       const sortBy = 'createdAt:asc';
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}&sortBy=${sortBy}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.OK);
 
@@ -106,7 +107,7 @@ describe('User Endpoints', () => {
       const perPage = 10;
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.NO_CONTENT);
     });
@@ -117,7 +118,7 @@ describe('User Endpoints', () => {
       const sortBy = 'createdAtdesc';
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}&sortBy=${sortBy}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual(
@@ -137,7 +138,7 @@ describe('User Endpoints', () => {
     test('Should return an user by its id', async () => {
       const response = await request(app)
         .get(`${baseURL}/${sampleUser.id}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.OK);
       expect(response.body).toEqual(sampleUser);
@@ -146,7 +147,7 @@ describe('User Endpoints', () => {
     test('Should return 400 - Bad Request', async () => {
       const response = await request(app)
         .get(`${baseURL}/id`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual(
@@ -165,7 +166,7 @@ describe('User Endpoints', () => {
     test('Should return 404 - Not Found', async () => {
       const response = await request(app)
         .get(`${baseURL}/1234`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
     });
@@ -181,7 +182,7 @@ describe('User Endpoints', () => {
 
       const response = await request(app)
         .put(`${baseURL}/${sampleUser.id}`)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send(params);
 
       expect(response.status).toBe(StatusCodes.OK);
@@ -197,7 +198,7 @@ describe('User Endpoints', () => {
 
       const response = await request(app)
         .put(`${baseURL}/1234`)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send(params);
 
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
@@ -208,7 +209,7 @@ describe('User Endpoints', () => {
     test('Should delete an user', async () => {
       const response = await request(app)
         .delete(`${baseURL}/${sampleUser.id}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.NO_CONTENT);
     });
@@ -216,7 +217,7 @@ describe('User Endpoints', () => {
     test('Should return 404 - Not Found', async () => {
       const response = await request(app)
         .delete(`${baseURL}/1234`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
     });
@@ -237,7 +238,7 @@ describe('User Endpoints', () => {
       const perPage = 10;
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}`)
-        .set('Authorization', `Beaver ${token}`);
+        .set('Authorization', `Beaver ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
       expect(response.body.message).toMatch('Invalid Authorization Format');
@@ -254,16 +255,16 @@ describe('User Endpoints', () => {
       expect(response.body.message).toMatch('invalid token');
     });
 
-    test("Should return 404 - Not Found if provided token doesn't match to any existing user", async () => {
+    test("Should return 404 - Not Found if provided token doesn't exists", async () => {
       const page = 2;
       const perPage = 10;
-      const token = await generateSampleToken(1234);
+      const token = await generateSampleInvalidToken(1234);
       const response = await request(app)
         .get(`${baseURL}?page=${page}&perPage=${perPage}`)
         .set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toBe(StatusCodes.NOT_FOUND);
-      expect(response.body.message).toMatch('User Not Found');
+      expect(response.status).toBe(404);
+      expect(response.body.message).toMatch('Token Not Found');
     });
   });
 });
