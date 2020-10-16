@@ -13,10 +13,10 @@ module.exports = catchAsync(async (req, res, next) => {
     if (scheme.match(/^Bearer$/i)) {
       token = credentials;
     } else {
-      throw new ApplicationError('Invalid Authorization Format', StatusCodes.UNAUTHORIZED);
+      throw new ApplicationError(messages.invalidAuthFormat, StatusCodes.UNAUTHORIZED);
     }
   } else {
-    throw new ApplicationError('Missing Authorization', StatusCodes.UNAUTHORIZED);
+    throw new ApplicationError(messages.authMissing, StatusCodes.UNAUTHORIZED);
   }
 
   let decoded;
