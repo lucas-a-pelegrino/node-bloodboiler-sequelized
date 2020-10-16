@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { StatusCodes } = require('http-status-codes');
 
 const { usersRepository } = require('../../repositories');
 const { ApplicationError } = require('../../utils');
@@ -7,12 +8,12 @@ const { encryptor } = require('../../helpers');
 module.exports.signin = async (email, password) => {
   const user = await usersRepository.get({ email });
   if (!user) {
-    throw new ApplicationError('User not found', 404);
+    throw new ApplicationError('User not found', StatusCodes.NOT_FOUND);
   }
 
   const isPasswordValid = await encryptor.comparePassword(password, user.password);
   if (!isPasswordValid) {
-    throw new ApplicationError('Invalid Password', 401);
+    throw new ApplicationError('Invalid Password', StatusCodes.UNAUTHORIZED);
   }
 
   const payload = {
