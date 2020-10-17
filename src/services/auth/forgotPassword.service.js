@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 
 const { usersRepository } = require('../../repositories');
 const { ApplicationError } = require('../../utils');
-const { encryptor, mailer } = require('../../helpers');
+const { encryptor, mailer, messages } = require('../../helpers');
 const userService = require('../users/update.service');
 
 const { resetTokenExpiresIn, clientURL } = require('../../config/env');
@@ -11,7 +11,7 @@ const { resetTokenExpiresIn, clientURL } = require('../../config/env');
 module.exports.forgotPassword = async (email) => {
   const user = await usersRepository.get({ email });
   if (!user) {
-    throw new ApplicationError('User not found', StatusCodes.NOT_FOUND);
+    throw new ApplicationError(messages.notFound('user'), StatusCodes.NOT_FOUND);
   }
 
   const payload = {

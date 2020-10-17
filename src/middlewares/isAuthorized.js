@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const { Op } = require('sequelize');
 const { jwt, catchAsync, ApplicationError } = require('../utils');
+const { messages } = require('../helpers');
 const { accessTokenRepository } = require('../repositories');
 
 module.exports = catchAsync(async (req, res, next) => {
@@ -12,10 +13,10 @@ module.exports = catchAsync(async (req, res, next) => {
     if (scheme.match(/^Bearer$/i)) {
       token = credentials;
     } else {
-      throw new ApplicationError('Invalid Authorization Format', StatusCodes.UNAUTHORIZED);
+      throw new ApplicationError(messages.invalidAuthFormat, StatusCodes.UNAUTHORIZED);
     }
   } else {
-    throw new ApplicationError('Missing Authorization', StatusCodes.UNAUTHORIZED);
+    throw new ApplicationError(messages.authMissing, StatusCodes.UNAUTHORIZED);
   }
 
   let decoded;
@@ -32,7 +33,7 @@ module.exports = catchAsync(async (req, res, next) => {
   });
 
   if (!accessToken) {
-    throw new ApplicationError('Token Not Found', 404);
+    throw new ApplicationError(messages.notFound('token'), StatusCodes.NOT_FOUND);
   }
 
   req.session = { token, id: decoded.id, email: decoded.email };

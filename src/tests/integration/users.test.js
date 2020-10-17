@@ -3,6 +3,7 @@ const request = require('supertest');
 const { StatusCodes } = require('http-status-codes');
 
 const app = require('../../config/express');
+const { messages } = require('../../helpers');
 const { version } = require('../../config/env');
 const { createSampleUsers, createSampleUser } = require('../fixtures/users.fixtures');
 const { generateSampleToken, generateSampleInvalidToken } = require('../fixtures/auth.fixtures');
@@ -123,7 +124,7 @@ describe('User Endpoints', () => {
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual(
         expect.objectContaining({
-          message: 'Invalid Fields',
+          message: messages.invalidFields,
           errors: {
             query: {
               sortBy: "sorting order must be one of the following: 'asc' or 'desc'",
@@ -152,7 +153,7 @@ describe('User Endpoints', () => {
       expect(response.status).toBe(StatusCodes.BAD_REQUEST);
       expect(response.body).toEqual(
         expect.objectContaining({
-          message: 'Invalid Fields',
+          message: messages.invalidFields,
           errors: {
             params: {
               id:
@@ -230,7 +231,7 @@ describe('User Endpoints', () => {
       const response = await request(app).get(`${baseURL}?page=${page}&perPage=${perPage}`);
 
       expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
-      expect(response.body.message).toMatch('Missing Authorization');
+      expect(response.body.message).toMatch(messages.authMissing);
     });
 
     test('Should return 401 - Unauthorized if Authorization format is invalid', async () => {
@@ -241,7 +242,7 @@ describe('User Endpoints', () => {
         .set('Authorization', `Beaver ${authToken}`);
 
       expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
-      expect(response.body.message).toMatch('Invalid Authorization Format');
+      expect(response.body.message).toMatch(messages.invalidAuthFormat);
     });
 
     test('Should return 401 - Unauthorized if JWT token is invalid', async () => {
@@ -264,7 +265,7 @@ describe('User Endpoints', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toMatch('Token Not Found');
+      expect(response.body.message).toMatch(messages.notFound('token'));
     });
   });
 });

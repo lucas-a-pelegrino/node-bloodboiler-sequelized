@@ -1,6 +1,7 @@
 const httpMocks = require('node-mocks-http');
 const { errorTracker, errorHandler } = require('../../../middlewares');
 const { ApplicationError, logger } = require('../../../utils');
+const { messages } = require('../../../helpers');
 
 describe('Error Middlewares', () => {
   describe('Error Tracker', () => {
@@ -46,7 +47,7 @@ describe('Error Middlewares', () => {
       expect(next).toHaveBeenCalledWith(
         expect.objectContaining({
           status: 500,
-          message: 'Internal Server Error',
+          message: messages.internalError,
           isOperational: false,
         }),
       );
@@ -109,7 +110,7 @@ describe('Error Middlewares', () => {
       errorHandler(error, req, res);
 
       expect(res.statusCode).toBe(500);
-      expect(spy).toHaveBeenCalledWith(expect.objectContaining({ message: 'Internal Server Error' }));
+      expect(spy).toHaveBeenCalledWith(expect.objectContaining({ message: messages.internalError }));
       process.env.NODE_ENV = 'test';
     });
   });
