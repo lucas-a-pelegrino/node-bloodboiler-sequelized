@@ -1,4 +1,6 @@
 const morgan = require('morgan');
+const { StatusCodes } = require('http-status-codes');
+
 const { logger } = require('./logger');
 
 morgan.token('message', (req, res) => res.locals.errorMessage || '');
@@ -8,12 +10,12 @@ const successResponseFormat = `${getIPFormat()}:method :url - :status - :respons
 const errorResponseFormat = `${getIPFormat()}:method :url - :status - :response-time ms - message: :message - :date[iso]`;
 
 const successHandler = morgan(successResponseFormat, {
-  skip: (req, res) => res.statusCode >= 400,
+  skip: (req, res) => res.statusCode >= StatusCodes.BAD_REQUEST,
   stream: { write: (message) => logger.info(message.trim()) },
 });
 
 const errorHandler = morgan(errorResponseFormat, {
-  skip: (req, res) => res.statusCode < 400,
+  skip: (req, res) => res.statusCode < StatusCodes.BAD_REQUEST,
   stream: { write: (message) => logger.error(message.trim()) },
 });
 
