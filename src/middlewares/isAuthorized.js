@@ -1,5 +1,8 @@
+const { StatusCodes } = require('http-status-codes');
+const { Op } = require('sequelize');
 const { jwt, catchAsync, ApplicationError } = require('../utils');
-const { usersRepository } = require('../repositories');
+const { messages } = require('../helpers');
+const { accessTokenRepository } = require('../repositories');
 
 module.exports = catchAsync(async (req, res, next) => {
   let token;
@@ -10,28 +13,30 @@ module.exports = catchAsync(async (req, res, next) => {
     if (scheme.match(/^Bearer$/i)) {
       token = credentials;
     } else {
-      throw new ApplicationError('Invalid Authorization Format', 401);
+      throw new ApplicationError(messages.invalidAuthFormat, StatusCodes.UNAUTHORIZED);
     }
   } else {
-    throw new ApplicationError('Missing Authorization', 401);
+    throw new ApplicationError(messages.authMissing, StatusCodes.UNAUTHORIZED);
   }
 
-  let userId;
-  jwt.verify(token, (err, decoded) => {
+  let decoded;
+  jwt.verify(token, (err, decodedToken) => {
     if (err) {
-      throw new ApplicationError(err.message, 401);
+      throw new ApplicationError(err.message, StatusCodes.UNAUTHORIZED);
     }
 
-    userId = decoded.sub.id;
+    decoded = decodedToken;
   });
 
-  const decodedUser = await usersRepository.getById(userId);
+  const accessToken = await accessTokenRepository.get({
+    where: { [Op.and]: [{ token }, { expired: false }] },
+  });
 
-  if (!decodedUser) {
-    throw new ApplicationError('User Not Found', 404);
+  if (!accessToken) {
+    throw new ApplicationError(messages.notFound('token'), StatusCodes.NOT_FOUND);
   }
 
-  req.session = { token, _id: decodedUser._id, email: decodedUser.email };
+  req.session = { token, id: decoded.id, email: decoded.email };
 
   next();
 });

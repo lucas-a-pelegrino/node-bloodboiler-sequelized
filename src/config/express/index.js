@@ -3,12 +3,14 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const cors = require('cors');
 const swagger = require('swagger-ui-express');
+const { StatusCodes } = require('http-status-codes');
 require('dotenv').config();
 
 const routes = require('../../routes');
 const swaggerDocs = require('../swagger/swagger.json');
 const { errorTracker, errorHandler } = require('../../middlewares');
 const { ApplicationError, logger, morgan } = require('../../utils');
+const { messages } = require('../../helpers');
 
 const { port, version, corsOptions } = require('../env');
 
@@ -37,7 +39,7 @@ app.use(`/api/${version}/documentation`, swagger.setup(swaggerDocs));
 Object.keys(routes).forEach((key) => app.use(`/api/${version}/${key}`, routes[key]));
 
 app.use((req, res, next) => {
-  next(new ApplicationError(404, 'Resource Not Found'));
+  next(new ApplicationError(messages.notFound('route'), StatusCodes.NOT_FOUND));
 });
 
 app.use(errorTracker);

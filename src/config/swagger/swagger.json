@@ -266,6 +266,85 @@
         }
       }
     },
+    "/auth/refresh-token": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refreshes the user's access token",
+        "description": "Refreshes the user's access token based on the refresh token provided in on sign on",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "refreshToken": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "token": "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjEsIm5hbWUiOiJKb2huIERvZSIsImVtYWlsIjoiam9obmRvZUBlbWFpbC5jb20ifSwiaWF0IjoxNjAyODk0MTY5LCJleHAiOjE2MDM0OTg5Njl9.oO-9m87a7l292k0HvCMyUA3Wc_MzY4sKhWv7f50fkR6Xt7OqGriSSSHmyAjLozmP",
+                "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjF9LCJpYXQiOjE2MDI4OTQxNjksImV4cCI6MTYwMjk4MDU2OX0.moHpsshyy1dn5uBNr1ci7Oo0xJMWr4tJw4XMCe9B1_0"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tokens were successfully refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "token": "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjEsIm5hbWUiOiJKb2huIERvZSIsImVtYWlsIjoiam9obmRvZUBlbWFpbC5jb20ifSwiaWF0IjoxNjAyODk0MTY5LCJleHAiOjE2MDM0OTg5Njl9.oO-9m87a7l292k0HvCMyUA3Wc_MzY4sKhWv7f50fkR6Xt7OqGriSSSHmyAjLozmP",
+                  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjF9LCJpYXQiOjE2MDI4OTQxNjksImV4cCI6MTYwMjk4MDU2OX0.moHpsshyy1dn5uBNr1ci7Oo0xJMWr4tJw4XMCe9B1_0"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The token provided has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "ApplicationError",
+                  "message": "Token Expired"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No user was found for the token provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "ApplicationError",
+                  "message": "User Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/": {
       "summary": "Users CRUD",
       "get": {
@@ -393,7 +472,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Succesfully creates a new user",
             "content": {
               "application/json": {
