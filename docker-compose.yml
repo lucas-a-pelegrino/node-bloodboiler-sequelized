@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: nbs-app
+    build:
+      context: .
+      target: development
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - .:/home/node/app
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229
+    command: npm run start:dev
+    env_file:
+      - .env
+    networks:
+      - net
+    depends_on:
+      - database
+
+  database:
+    container_name: nbs-database
+    image: postgres:13-alpine
+    networks:
+      - net
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+networks:
+  net:
+volumes:
+  pgdata:

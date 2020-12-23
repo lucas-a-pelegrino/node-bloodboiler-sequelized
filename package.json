@@ -16,8 +16,13 @@
     "start:debug": "NODE_ENV=development node --inspect-brk=5858 app.js",
     "test": "jest -i",
     "test:coverage": "jest -i && codecov",
-    "pretest": "NODE_ENV=test npx sequelize db:create && NODE_ENV=test npx sequelize db:migrate",
-    "posttest": "NODE_ENV=test npx sequelize db:drop"
+    "sequelize": "npx sequelize",
+    "sequelize:create": "npm run sequelize db:create",
+    "sequelize:migrate": "npm run sequelize db:migrate",
+    "sequelize:undo": "npm run sequelize db:migrate:undo",
+    "sequelize:drop": "npm run sequelize db:drop",
+    "pretest": "NODE_ENV=test npm run sequelize:create && NODE_ENV=test npm run sequelize:migrate",
+    "posttest": "NODE_ENV=test npm run sequelize:drop"
   },
   "husky": {
     "hooks": {

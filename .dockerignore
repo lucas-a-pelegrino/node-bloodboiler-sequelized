@@ -1,0 +1,12 @@
+**/node_modules
+**/npm-debug.log
+**/.env*
+**/*.md
+!README.md
+**/.docker*
+**/docker/**/*
+**/docker
+**/.git*
+**/*.yml
+**/.eslint*
+**/.prettier*

@@ -73,6 +73,36 @@ $ npm test
 $ yarn test
 ```
 
+#### Alternative: Run in Docker Containers
+
+> [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) are required to this way
+
+Start application
+
+```sh
+# locally:
+$ docker-compose up
+```
+
+Install migrations
+
+```
+$ docker exec -it nbs-app npm run sequelize:migrate
+```
+
+Revert migrations
+
+```
+$ docker exec -it nbs-app npm run sequelize:undo
+```
+
+Testing
+
+```sh
+# Run tests
+$ docker exec -it nbs-app npm test
+```
+
 ## Documentation
 
 You might want to check the API docs as well!
