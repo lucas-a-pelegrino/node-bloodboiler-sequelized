@@ -73,6 +73,24 @@ $ npm test
 $ yarn test
 ```
 
+### Docker
+
+Bloodboiler comes with Docker support, you can develop and test your code using Docker for minimal configuration, Nodemon takes care of restarting the application inside Docker so you can code locally.
+
+```sh
+# Code Locally with:
+$ npm run docker:dev
+# or
+$ yarn docker:dev
+
+# Run Test Suites inside Docker:
+$ npm run docker:test
+# or
+$ yarn docker:test
+```
+
+> NOTE: In order to use the methods listed above, make sure you have Docker installed on your local machine!
+
 ## Documentation
 
 You might want to check the API docs as well!
