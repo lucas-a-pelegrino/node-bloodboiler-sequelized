@@ -2,7 +2,7 @@ version: '3'
 
 services:
   database:
-    container_name: bloodboiler-sql-database
+    container_name: database
     image: postgres:13-alpine
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -17,14 +17,13 @@ services:
     logging:
       driver: none
 
-  backend:
-    container_name: bloodboiler-sql-backend
-    build: ../..
-    image: bloodboiler
+  api:
+    container_name: api
     ports:
       - '3000:3000'
     volumes:
-      - .:/opt/node_app/app
+      - .:/node/app:delegated
+      - /node/app/node_modules
     networks:
       - app-network
     depends_on:
