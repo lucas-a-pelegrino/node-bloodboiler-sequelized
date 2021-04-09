@@ -8,4 +8,6 @@ services:
       context: .
       target: test
     image: bloodboiler-sql:latest
-    command: ['npm', 'test']
+    command: >
+      sh -c "npx sequelize-cli db:migrate \
+             && npm test"
