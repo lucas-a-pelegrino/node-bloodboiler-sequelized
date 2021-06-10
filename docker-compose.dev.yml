@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  backend:
+    environment:
+      - DB_HOST=database
+    command: bash -c "
+      npx sequelize db:migrate &&
+      npm run start:dev -L"
